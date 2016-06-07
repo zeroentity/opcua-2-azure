@@ -1,28 +1,15 @@
-Simple OPC-UA GUI client.
+OPC UA to Microsoft Azure Bridge
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/FreeOpcUa/opcua-client-gui/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/FreeOpcUa/opcua-client-gui/?branch=master)
+This project is to create a simple bridge layer between an industrial OPC UA server and Azure IoT Hub, allowing easy industrial data transmission to Microsofts Cloud platform.
 
-Written using freeopcua python api and pyqt. Basic functionnalities are implemented including subscribing to nodes and listing attributes and references.
+Dependencies: Free OPC UA, Azure IoT SDK
+
+Subscribing to a node forwards all OPC UA updates to Azure IoT Hub.
+
+Written using freeopcua python api and pyqt.
 
 
 ![Screenshot](/screenshot.png?raw=true "Screenshot")
 
-What works:
-* connecting and disconnecting
-* browsing with icons per node types
-* showing attributes and references
-* subscribing to variable
-* make available on pip: sudo pip install freeopcua-client
-* remember connections and show connection history
-* subscribing to events
-
-TODO (listed after priority):
-
-* display datatype and timestamp in attribute view for variables
-* write node values
-* detect lost connection and automatically reconnect 
-* more human friendly refs display
-* gui for certificates
-* gui for encryption 
 
 
