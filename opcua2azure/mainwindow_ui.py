@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'freeopcuaclient/mainwindow_ui.ui'
+# Form implementation generated from reading ui file 'C:\Users\d15138\Documents\GitHub\opcua-2-azure\opcua2azure\mainwindow_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.4.2
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(922, 692)
+        MainWindow.resize(976, 786)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../network.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.splitter, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 922, 27))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 976, 21))
         self.menuBar.setObjectName("menuBar")
         self.menuOPC_UA_Client = QtWidgets.QMenu(self.menuBar)
         self.menuOPC_UA_Client.setObjectName("menuOPC_UA_Client")
@@ -102,22 +102,37 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(11, 11, 11, 11)
         self.gridLayout.setSpacing(6)
         self.gridLayout.setObjectName("gridLayout")
-        self.connectButton = QtWidgets.QPushButton(self.dockWidgetContents_2)
-        self.connectButton.setObjectName("connectButton")
-        self.gridLayout.addWidget(self.connectButton, 0, 1, 1, 1)
-        self.disconnectButton = QtWidgets.QPushButton(self.dockWidgetContents_2)
-        self.disconnectButton.setObjectName("disconnectButton")
-        self.gridLayout.addWidget(self.disconnectButton, 0, 2, 1, 1)
-        self.addrComboBox = QtWidgets.QComboBox(self.dockWidgetContents_2)
+        self.label_2 = QtWidgets.QLabel(self.dockWidgetContents_2)
+        self.label_2.setObjectName("label_2")
+        self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
+        self.addrOpcUaComboBox = QtWidgets.QComboBox(self.dockWidgetContents_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.addrComboBox.sizePolicy().hasHeightForWidth())
-        self.addrComboBox.setSizePolicy(sizePolicy)
-        self.addrComboBox.setEditable(True)
-        self.addrComboBox.setInsertPolicy(QtWidgets.QComboBox.InsertAtTop)
-        self.addrComboBox.setObjectName("addrComboBox")
-        self.gridLayout.addWidget(self.addrComboBox, 0, 0, 1, 1)
+        sizePolicy.setHeightForWidth(self.addrOpcUaComboBox.sizePolicy().hasHeightForWidth())
+        self.addrOpcUaComboBox.setSizePolicy(sizePolicy)
+        self.addrOpcUaComboBox.setEditable(True)
+        self.addrOpcUaComboBox.setInsertPolicy(QtWidgets.QComboBox.InsertAtTop)
+        self.addrOpcUaComboBox.setObjectName("addrOpcUaComboBox")
+        self.gridLayout.addWidget(self.addrOpcUaComboBox, 0, 1, 1, 1)
+        self.connectOpcUaButton = QtWidgets.QPushButton(self.dockWidgetContents_2)
+        self.connectOpcUaButton.setObjectName("connectOpcUaButton")
+        self.gridLayout.addWidget(self.connectOpcUaButton, 0, 2, 1, 1)
+        self.disconnectOpcUaButton = QtWidgets.QPushButton(self.dockWidgetContents_2)
+        self.disconnectOpcUaButton.setObjectName("disconnectOpcUaButton")
+        self.gridLayout.addWidget(self.disconnectOpcUaButton, 0, 3, 1, 1)
+        self.label = QtWidgets.QLabel(self.dockWidgetContents_2)
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
+        self.connStringIoTHub = QtWidgets.QLineEdit(self.dockWidgetContents_2)
+        self.connStringIoTHub.setObjectName("connStringIoTHub")
+        self.gridLayout.addWidget(self.connStringIoTHub, 1, 1, 1, 1)
+        self.connectIoTHubButton = QtWidgets.QPushButton(self.dockWidgetContents_2)
+        self.connectIoTHubButton.setObjectName("connectIoTHubButton")
+        self.gridLayout.addWidget(self.connectIoTHubButton, 1, 2, 1, 1)
+        self.disconnectIoTHubButton = QtWidgets.QPushButton(self.dockWidgetContents_2)
+        self.disconnectIoTHubButton.setObjectName("disconnectIoTHubButton")
+        self.gridLayout.addWidget(self.disconnectIoTHubButton, 1, 3, 1, 1)
         self.addrDockWidget.setWidget(self.dockWidgetContents_2)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(4), self.addrDockWidget)
         self.subDockWidget = QtWidgets.QDockWidget(MainWindow)
@@ -223,8 +238,12 @@ class Ui_MainWindow(object):
         self.menuOPC_UA_Client.setTitle(_translate("MainWindow", "Act&ions"))
         self.attrDockWidget.setWindowTitle(_translate("MainWindow", "&Attributes"))
         self.attrRefreshButton.setText(_translate("MainWindow", "Refresh"))
-        self.connectButton.setText(_translate("MainWindow", "Connect"))
-        self.disconnectButton.setText(_translate("MainWindow", "Disconnect"))
+        self.label_2.setText(_translate("MainWindow", "OPC UA Server Address"))
+        self.connectOpcUaButton.setText(_translate("MainWindow", "Connect"))
+        self.disconnectOpcUaButton.setText(_translate("MainWindow", "Disconnect"))
+        self.label.setText(_translate("MainWindow", "Device Connection String"))
+        self.connectIoTHubButton.setText(_translate("MainWindow", "Connect"))
+        self.disconnectIoTHubButton.setText(_translate("MainWindow", "Disconnect"))
         self.subDockWidget.setWindowTitle(_translate("MainWindow", "S&ubscriptions"))
         self.refDockWidget.setWindowTitle(_translate("MainWindow", "&References"))
         self.evDockWidget.setWindowTitle(_translate("MainWindow", "&Events"))
@@ -243,4 +262,14 @@ class Ui_MainWindow(object):
         self.actionCopyPath.setToolTip(_translate("MainWindow", "Copy path to node to clipboard"))
         self.actionCopyNodeId.setText(_translate("MainWindow", "C&opy NodeId"))
         self.actionCopyNodeId.setToolTip(_translate("MainWindow", "Copy NodeId to clipboard"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
 

@@ -14,9 +14,14 @@ from opcua2azure.opcua.uaclient import UaClient
 from opcua2azure.mainwindow_ui import Ui_MainWindow
 from opcua2azure import resources
 
+from opcua2azure.iothub.iothub_client import HubManager
+
 
 class DataChangeHandler(QObject):
     data_change_fired = pyqtSignal(object, str, str)
+
+    def __init__(self, hub_manager):
+        self.hub_manager = hub_manager
 
     def datachange_notification(self, node, val, data):
         if data.monitored_item.Value.SourceTimestamp:
@@ -28,6 +33,7 @@ class DataChangeHandler(QObject):
         self.data_change_fired.emit(node, str(val), dato)
 
         # TODO call to Azure IoT Hub SDK should happen here
+        self.hub_manager.format_dv_for_send(data)
 
 
 class EventHandler(QObject):
@@ -87,10 +93,14 @@ class EventUI(object):
 
 class DataChangeUI(object):
 
-    def __init__(self, window, uaclient):
+    def __init__(self, window, uaclient, hub_manager):
         self.window = window
         self.uaclient = uaclient
-        self._subhandler = DataChangeHandler()
+
+        # FIXME IoT stuff
+        self.hub_manager = hub_manager
+
+        self._subhandler = DataChangeHandler(self.hub_manager)
         self._subscribed_nodes = []
         self.model = QStandardItemModel()
         self.window.ui.subView.setModel(self.model)
@@ -348,25 +358,31 @@ class Window(QMainWindow):
 
         # init widgets
         for addr in self._address_list:
-            self.ui.addrComboBox.insertItem(-1, addr)
+            self.ui.addrOpcUaComboBox.insertItem(-1, addr)
 
         self.uaclient = UaClient()
+
+        # FIXME IoT stuff
+        self.hub_manager = HubManager()
 
         self.tree_ui = TreeUI(self, self.uaclient)
         self.refs_ui = RefsUI(self, self.uaclient)
         self.attrs_ui = AttrsUI(self, self.uaclient)
-        self.datachange_ui = DataChangeUI(self, self.uaclient)
+        self.datachange_ui = DataChangeUI(self, self.uaclient, self.hub_manager)
         self.event_ui = EventUI(self, self.uaclient)
 
         self.resize(int(self.settings.value("main_window_width", 800)), int(self.settings.value("main_window_height", 600)))
         self.restoreState(self.settings.value("main_window_state", b""))
 
-        self.ui.connectButton.clicked.connect(self._connect)
-        self.ui.disconnectButton.clicked.connect(self._disconnect)
+        self.ui.connectOpcUaButton.clicked.connect(self._connect_opcua)
+        self.ui.disconnectOpcUaButton.clicked.connect(self._disconnect_opcua)
         # self.ui.treeView.expanded.connect(self._fit)
 
-        self.ui.actionConnect.triggered.connect(self._connect)
-        self.ui.actionDisconnect.triggered.connect(self._disconnect)
+        self.ui.actionConnect.triggered.connect(self._connect_opcua)
+        self.ui.actionDisconnect.triggered.connect(self._disconnect_opcua)
+
+        self.ui.connectIoTHubButton.clicked.connect(self._connect_iothub)
+        self.ui.disconnectIoTHubButton.clicked.connect(self._disconnect_iothub)
 
     def show_error(self, msg, level=1):
         print("showing error: ", msg, level)
@@ -381,8 +397,8 @@ class Window(QMainWindow):
     def get_uaclient(self):
         return self.uaclient
 
-    def _connect(self):
-        uri = self.ui.addrComboBox.currentText()
+    def _connect_opcua(self):
+        uri = self.ui.addrOpcUaComboBox.currentText()
         try:
             self.uaclient.connect(uri)
         except Exception as ex:
@@ -391,6 +407,14 @@ class Window(QMainWindow):
 
         self._update_address_list(uri)
         self.tree_ui.start()
+
+    def _connect_iothub(self):
+        connection_string = self.ui.connStringIoTHub.currentText()
+        try:
+            self.hub_manager.connect(connection_string)
+        except Exception as ex:
+            self.show_error(ex)
+            raise
 
     def _update_address_list(self, uri):
         if uri == self._address_list[0]:
@@ -401,7 +425,7 @@ class Window(QMainWindow):
         if len(self._address_list) > self._address_list_max_count:
             self._address_list.pop(-1)
 
-    def _disconnect(self):
+    def _disconnect_opcua(self):
         try:
             self.uaclient.disconnect()
         except Exception as ex:
@@ -413,6 +437,12 @@ class Window(QMainWindow):
             self.attrs_ui.clear()
             self.datachange_ui.clear()
             self.event_ui.clear()
+
+    def _disconnect_iothub(self):
+        try:
+            self.hub_manager.disconnect()
+        except Exception as ex:
+            self.show_error(ex)
 
     def closeEvent(self, event):
         self.settings.setValue("main_window_width", self.size().width())

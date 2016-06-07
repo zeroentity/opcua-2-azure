@@ -7,7 +7,7 @@ from opcua import Node
 class UaClient(object):
     """
     OPC-Ua client specialized for the need of GUI client
-    return exactly whant GUI needs, no customization possible
+    return exactly what GUI needs, no customization possible
     """
 
     def __init__(self):

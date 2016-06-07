@@ -36,14 +36,18 @@ send_callbacks = 0
 
 # String containing Hostname, Device Id & Device Key in the format:
 # "HostName=<host_name>;DeviceId=<device_id>;SharedAccessKey=<device_key>"
-connection_string = "[device connection string]"
+# connection_string = "[device connection string]"
 
 msg_txt = "{\"deviceId\": \"myPythonDevice\",\"windSpeed\": %.2f}"
 
 
 class HubManager(object):
 
-    def __init__(self, connection_string, protocol=IoTHubTransportProvider.AMQP):
+    def __init__(self):
+        self.client_protocol = None
+        self.client = None
+
+    def connect(self, connection_string, protocol=IoTHubTransportProvider.AMQP):
         self.client_protocol = protocol
         self.client = IoTHubClient(connection_string, protocol)
         if protocol == IoTHubTransportProvider.HTTP:
@@ -54,6 +58,9 @@ class HubManager(object):
         # some embedded platforms need certificate information
         # self.set_certificates()
         self.client.set_message_callback(self._receive_message_callback, receive_context)
+
+    def disconnect(self):
+        pass
 
     def set_certificates(self):
         from iothub_client_cert import certificates
@@ -73,6 +80,10 @@ class HubManager(object):
         map_properties = message.properties()
         key_value_pair = map_properties.get_internals()
         print("    Properties: %s" % key_value_pair)
+
+        # FIXME call to OPC UA data value write should happen here
+        pass
+
         counter += 1
         receive_callbacks += 1
         print("    Total calls received: %d" % receive_callbacks)
@@ -101,6 +112,14 @@ class HubManager(object):
         self.client.send_event_async(
             event, self._send_confirmation_callback, send_context)
 
+    def format_dv_for_send(self, dv):
+        # TODO format the data value from OPC UA to JSON for Azure
+        msg_count = 1
+        msg_txt_formatted = "msg"
+        msg_properties = {"Property": "PropMsg_%d" % msg_count}
+
+        self.send_event(msg_txt_formatted, msg_properties, msg_count)
+
 
 def main(connection_string, protocol):
     try:
@@ -116,15 +135,11 @@ def main(connection_string, protocol):
             print("IoTHubClient sending %d messages" % message_count)
 
             for i in range(0, message_count):
-                msg_txt_formatted = msg_txt % (
-                    avg_wind_speed + (random.random() * 4 + 2))
-                msg_properties = {
-                    "Property": "PropMsg_%d" % i
-                }
+                msg_txt_formatted = msg_txt % (avg_wind_speed + (random.random() * 4 + 2))
+                msg_properties = {"Property": "PropMsg_%d" % i}
 
                 hub_manager.send_event(msg_txt_formatted, msg_properties, i)
-                print(
-                    "IoTHubClient.send_event_async accepted message [%d] for transmission to IoT Hub." % i)
+                print("IoTHubClient.send_event_async accepted message [%d] for transmission to IoT Hub." % i)
 
             # Wait for Commands or exit
             print("IoTHubClient waiting for commands, press Ctrl-C to exit")
