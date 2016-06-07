@@ -1,3 +1,3 @@
-from freeopcuaclient.mainwindow import main
+from opcua2azure.mainwindow import main
 if __name__ == "__main__":
     main()

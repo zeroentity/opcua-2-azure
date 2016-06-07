@@ -10,9 +10,9 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QApplication, QAbstractItemVie
 
 from opcua import ua
 
-from freeopcuaclient.uaclient import UaClient
-from freeopcuaclient.mainwindow_ui import Ui_MainWindow
-from freeopcuaclient import resources
+from opcua2azure.opcua.uaclient import UaClient
+from opcua2azure.mainwindow_ui import Ui_MainWindow
+from opcua2azure import resources
 
 
 class DataChangeHandler(QObject):
@@ -27,12 +27,16 @@ class DataChangeHandler(QObject):
             dato = datetime.datetime.now().isoformat()
         self.data_change_fired.emit(node, str(val), dato)
 
+        # TODO call to Azure IoT Hub SDK should happen here
+
 
 class EventHandler(QObject):
     event_fired = pyqtSignal(object)
 
     def event_notification(self, event):
         self.event_fired.emit(event)
+
+        # TODO call to Azure IoT Hub SDK should happen here
 
 
 class EventUI(object):
