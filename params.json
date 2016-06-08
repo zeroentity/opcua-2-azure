@@ -1,0 +1,6 @@
+{
+  "name": "opcua-2-azure",
+  "tagline": "OPC-UA to Azure IoT Hub Bridge Application",
+  "body": "OPC UA to Microsoft Azure Bridge\r\n\r\nThis project is to create a simple bridge layer between an industrial OPC UA server and Azure IoT Hub, allowing easy transmission of industrial data to Microsoft's Cloud platform.\r\n\r\nDependencies: Free OPC UA, Azure IoT SDK, PYQT5\r\n\r\nSubscribing to a node forwards all OPC UA updates to Azure IoT Hub.\r\n\r\n![Screenshot](/screenshot.png?raw=true \"Screenshot\")\r\n\r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
