@@ -1,3 +1,5 @@
+THIS PROJECT IS CURRENTLY NOT BEING DEVELOPED!!!!  
+  
 OPC UA to Microsoft Azure Bridge
 
 This project is to create a simple bridge layer between an industrial OPC UA server and Azure IoT Hub, allowing easy industrial data transmission to Microsofts Cloud platform.
